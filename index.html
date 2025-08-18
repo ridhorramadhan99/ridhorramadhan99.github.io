@@ -1,126 +1,386 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Ridho R. Ramadhan</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-image: url("image1.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-attachment: fixed;
-    }
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Portfolio – Ridho</title>
 
-    .header {
-      background-color: #222;
-      color: #fff;
-      padding: 30px;
-      text-align: center;
-      font-family: 'Comic Sans MS', cursive;
-    }
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
 
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-    }
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Optional: Tailwind config (feel free to remove)
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { inter: ['Inter', 'ui-sans-serif', 'system-ui'] },
+            boxShadow: {
+              soft: '0 10px 30px -12px rgb(0 0 0 / 0.25)'
+            }
+          }
+        }
+      };
+    </script>
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    .content {
-      background-color: rgba(255, 255, 255, 0.85);
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-    h3 {
-      color: #2c3e50;
-    }
-    .section {
-      margin-bottom: 30px;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    .badge {
-      display: inline-block;
-      background-color: #2c3e50;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 12px;
-      margin-right: 5px;
-      margin-top: 5px;
-    }
-    .footer {
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-    }
+    <style>
+      :root { --ring: 62 100% 50%; }
+      html { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      .glass { @apply bg-white/70 backdrop-blur dark:bg-slate-900/60; }
+    </style>
+  </head>
+  <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-40 
+    bg-white/40 dark:bg-slate-900/70 
+    backdrop-blur-sm 
+    border-b border-white/200 dark:border-slate-800/60">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <a href="#" aria-label="Beranda" class="flex items-center gap-3 text-inherit no-underline">
+            <!-- Avatar -->
+            <div class="relative w-12 h-12">
+                <!-- Ring glowing -->
+                <div 
+                  class="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-400 p-[3px]">
+                  <!-- Foto profil -->
+                  <img 
+                    src="fotoprofil.jpg" 
+                    alt="Foto Profil" 
+                    class="rounded-full w-full h-full object-cover">
+                </div>
+              </div>
+          
+            <!-- Teks -->
+            <div>
+              <h1 class="text-lg font-semibold leading-tight">Ridho Ramadhan</h1>
+              <span class="block text-sm text-gray-500 dark:text-gray-400">
+                IT/ICT Technician • PT Angkasa Pura Supports
+              </span>
+            </div>
+          </a>          
+        <nav class="hidden gap-6 md:flex">
+          <a href="#about" class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">About</a>
+          <a href="#projects" class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">Projects</a>
+          <a href="#experience" class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">Experience</a>
+          <a href="#contact" class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">Contact</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <button id="themeBtn" class="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-400/70 text-slate-600 hover:bg-slate-900 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-50" aria-label="Toggle theme">
+            <!-- Icon swapped by JS -->
+            <svg id="moon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg>
+            <svg id="sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364l-1.414-1.414M7.05 7.05L5.636 5.636m12.728 0l-1.414 1.414M7.05 16.95l-1.414 1.414M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </button>
+          <a href="#" class="inline-flex items-center rounded-2xl bg-slate-900 px-3 py-2 text-sm font-medium text-white shadow-soft hover:bg-black dark:bg-white dark:text-slate-900">Download CV</a>
+        </div>
+      </div>
+    </header>
 
-    img.avatar {
-      border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      margin-bottom: 10px;
-      border: 2px solid #ccc;
-    }
+    <!-- Hero -->
+    <section id="home" class="relative overflow-hidden">
+      <div class="absolute inset-0 -z-10 bg-[radial-gradient(40rem_40rem_at_80%_-6rem,rgba(14,165,233,0.15),transparent)] dark:bg-[radial-gradient(40rem_40rem_at_80%_-6rem,rgba(14,165,233,0.12),transparent)]"></div>
+      <div class="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 md:grid-cols-5 md:py-20">
+        <div class="md:col-span-3">
+          <p class="mb-2 inline-flex items-center gap-2 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">SELAMAT DATANG</p>
+          <h1 class="text-3xl font-semibold leading-tight md:text-5xl">Web Portofolio • Ridho Ramadhan</h1>
+          <p class="mt-4 max-w-2xl text-slate-600 dark:text-slate-300">Teknisi IT/ICT dengan minat kuat pada web interaktif, automasi, dan UX. Berpengalaman dengan jobdesk : CCTV, FIDS, PABX/IP Phone, access door, X-ray, SCADA/PLC, MCFA, dan UVIS scanner. Suka membangun antarmuka yang bersih dan cepat.</p>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <span class="inline-flex items-center gap-2 rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">📍 Surabaya, Indonesia</span>
+            <a href="mailto:ridho@email.com" class="text-sm hover:underline">✉️ ridhorramadhan99@email.com</a>
+            <a href="tel:+6281234567890" class="text-sm hover:underline">📞 +62-85*-****-*772</a>
+          </div>
+          <div class="mt-6 flex items-center gap-3">
+            <a href="#projects" class="inline-flex items-center rounded-2xl bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-soft hover:bg-sky-700">Lihat Proyek →</a>
+            <a href="#" class="inline-flex items-center rounded-2xl border border-slate-200/70 px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900">GitHub</a>
+            <a href="#" class="inline-flex items-center rounded-2xl border border-slate-200/70 px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900">LinkedIn</a>
+          </div>
+        </div>
+        <div class="md:col-span-2">
+          <div class="rounded-2xl border border-slate-200/70 bg-gradient-to-b from-slate-50 to-white p-6 shadow-soft dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
+            <h3 class="text-lg font-semibold">Jobdesk Utama</h3>
+            <p class="mt-1 text-sm text-slate-500">Teknologi & alat yang sering dipakai</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">CCTV</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">FIDS</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">IPTV</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">PABX/IP Phone</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">Automatic Announcer</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">X-ray</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">PLC/SCADA</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">MCFA</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">UVIScan</span>
+              <span class="rounded-xl bg-slate-100 px-3 py-1.5 text-sm dark:bg-slate-800">ETD</span>
+            </div>
+            <hr class="my-6 border-slate-200/70 dark:border-slate-800" />
+            <p class="mb-2 text-sm text-slate-500">Tools</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">VS Code</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Git</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Figma</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Postman</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Wireshark</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Pelco</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">milestone</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">iFIX 5.5</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">canva</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">AdobeCC</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">workspace</span>
+              <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">MsOffice</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    h2 {
-      margin-top: 0;
-    }
-  </style>
-</head>
-<body>
+    <!-- About -->
+    <section id="about" class="border-y border-slate-200/70 py-14 dark:border-slate-800 md:py-20">
+      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
+        <div>
+          <h2 class="text-2xl font-semibold md:text-3xl">Tentang Saya</h2>
+          <p class="mt-2 text-slate-600 dark:text-slate-300">Fokus dalam pengembangan diri. Terus belajar dan meningkatkan pengalaman. Pada development web reliability sistem, observability, dan UI yang mudah digunakan. Sedang tertarik pada integrasi sistem bandara dan web real-time. Mahasiswa elektronika di Universitas 17
+            Agustus 1945 Surabaya. Memiliki minat dibidang Ilmu alam, IT dan ekonomi.</p>
+        </div>
+        <div class="md:col-span-2">
+          <ul class="space-y-3 text-slate-700 dark:text-slate-200">
+            <li class="flex items-start gap-3">✅ Suka membangun dashboard monitoring ringan dengan performa tinggi.</li>
+            <li class="flex items-start gap-3">✅ Kode yang rapih, reusable, dan mudah di-scale.</li>
+            <li class="flex items-start gap-3">✅ Komunikasi jelas, dokumentasi singkat-padat.</li>
+          </ul>
+          <br>
+          <br>
+          <div>
+          <h4>MyCourse:</h4>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Operator Otomasi Industri (PLC) • UPTPK BLK Surabaya • 2017</span>
+            <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Mini Class Cisco • ID Networkers • 2023</span>
+            <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Jaringan Komputer Dasar • ID Networkers • 2023</span>
+            <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Fullstack Developer • IT Box • Ongoing</span>
+            <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Cybescurity• IT Box • Ongoing</span>
+            <span class="rounded-xl border border-slate-200/70 px-3 py-1.5 text-sm dark:border-slate-800">Computer Network • IT Box • Ongoing</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="header">
-    <h1><u>WELCOME !!</u></h1>
-  </div>
+    <!-- Projects -->
+    <section id="projects" class="py-14 md:py-20">
+      <div class="mx-auto max-w-6xl px-4">
+        <div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <h2 class="text-2xl font-semibold md:text-3xl">MyProject</h2>
+            <p class="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">Kumpulan proyek yang relevan dengan pekerjaan dan minat saya.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="search" type="text" placeholder="Cari proyek atau tag (mis: React, WebSocket)" class="w-80 rounded-2xl border border-slate-200/70 px-4 py-2 text-sm outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500/40 dark:border-slate-800 dark:bg-slate-950" />
+            <select id="category" class="rounded-2xl border border-slate-200/70 px-3 py-2 text-sm dark:border-slate-800 dark:bg-slate-950">
+              <option>All</option>
+              <option>Web App</option>
+              <option>Web</option>
+              <option>Automation</option>
+            </select>
+          </div>
+        </div>
 
-  <div class="container">
-    <div class="content" id="tentang">
-      <center>
-        <h2>Tentang Saya</h2>
-        <img src="image3.jpg" alt="Foto Ridho" class="avatar">
-      </center>
-      <p><strong>Nama:</strong> Ridho Rudhianto Ramadhan</p>
-      <p><strong>Tanggal Lahir:</strong> 13 Januari 1999</p>
-      <p><strong>Pendidikan:</strong> S1 Teknik Elektronika - Universitas 17 Agustus 1945 Surabaya</p>
-      <p><strong>Pekerjaan:</strong> Teknisi IT/ICT di PT. Angkasa Pura Supports</p>
-    </div>
+        <div id="grid" class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
 
-        <div class="section">
-      <h2>Keahlian</h2>
-      <div class="badge">Instalasi CCTV</div>
-      <div class="badge">Cisco Packet Tracer</div>
-      <div class="badge">FIDS</div>
-      <div class="badge">UI/UX</div>
-      <div class="badge">cybersecurity</div>
-      <div class="badge">CSS</div>
-      <div class="badge">HTML5</div>
-      <div class="badge">Troubleshooting</div>
-    </div>
+    <!-- Experience -->
+    <section id="experience" class="border-y border-slate-200/70 py-14 dark:border-slate-800 md:py-20">
+      <div class="mx-auto max-w-6xl px-4">
+        <h2 class="text-2xl font-semibold md:text-3xl">Pengalaman</h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-2" id="exp"></div>
+      </div>
+    </section>
 
-    <div class="content" id="kontak">
-      <center>
-        <h2>Kontak</h2>
-      </center>
-      <p><strong>Email:</strong> <a href="mailto:ridhorramadhan99@gmail.com">ridhorramadhan99@gmail.com</a></p>
-      <p><strong>Instagram:</strong> <a href="https://instagram.com/ridhorramadhan99" target="_blank">@ridhorramadhan99</a></p>
-      <p><strong>Portofolio:</strong> <a href="https://ridhorramadhan99.github.io" target="_blank">ridhorramadhan99.github.io</a></p>
-    </div>
-  </div>
+    <!-- Contact -->
+    <section id="contact" class="py-14 md:py-20">
+      <div class="mx-auto max-w-6xl px-4">
+        <div class="grid gap-8 md:grid-cols-5">
+          <div class="md:col-span-2">
+            <h2 class="text-2xl font-semibold md:text-3xl">Kontak</h2>
+            <p class="mt-2 text-slate-600 dark:text-slate-300">Ada kolaborasi atau yang bisa dibantu? Kirim pesan melalui formulir atau hubungi langsung.</p>
+            <div class="mt-6 space-y-2 text-sm">
+              <a href="mailto:ridho@email.com" class="block hover:underline">✉️ ridhorramadhan99@email.com</a>
+              <a href="tel:+6281234567890" class="block hover:underline">📞 +62-85*-****-*772</a>
+              <a href="#" class="block hover:underline">🔗 LinkedIn</a>
+              <a href="#" class="block hover:underline">💻 GitHub</a>
+            </div>
+          </div>
+          <div class="md:col-span-3 rounded-2xl border border-slate-200/70 p-6 shadow-soft dark:border-slate-800">
+            <h3 class="text-lg font-semibold">Kirim Pesan</h3>
+            <p class="text-sm text-slate-500">(This feature is under maintenance)</p>
+            <form id="contactForm" class="mt-4 space-y-3">
+              <div class="grid gap-3 md:grid-cols-2">
+                <input name="name" placeholder="Nama" required class="rounded-2xl border border-slate-200/70 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-sky-500/40 dark:border-slate-800 dark:bg-slate-950" />
+                <input type="email" name="email" placeholder="Email" required class="rounded-2xl border border-slate-200/70 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-sky-500/40 dark:border-slate-800 dark:bg-slate-950" />
+              </div>
+              <input name="subject" placeholder="Subjek" class="w-full rounded-2xl border border-slate-200/70 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-sky-500/40 dark:border-slate-800 dark:bg-slate-950" />
+              <textarea name="message" placeholder="Pesan" required class="min-h-[120px] w-full rounded-2xl border border-slate-200/70 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-sky-500/40 dark:border-slate-800 dark:bg-slate-950"></textarea>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">This feature is n/a</p>
+                <button class="inline-flex items-center rounded-2xl bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-black dark:bg-white dark:text-slate-900">Kirim</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="footer">
-    <p>&copy; 2025 Ridho Rudhianto Ramadhan<br>All rights reserved</p>
-  </div>
+    <!-- Footer -->
+    <footer class="border-t border-slate-200/70 py-8 text-sm dark:border-slate-800">
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 md:flex-row">
+        <p class="text-slate-500">© <span id="year"></span> Ridho Ramadhan. All rights reserved.</p>
+        <div class="flex items-center gap-3">
+          <a href="#" class="hover:underline">Website</a>
+          <a href="#" class="hover:underline">GitHub</a>
+          <a href="#" class="hover:underline">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
 
-</body>
+    <script>
+      // --- Data (edit sesuai kebutuhan) ---
+      const PROJECTS = [
+        {
+          title: 'Airport Ops Electronics',
+          type: 'Fix & Maintenance',
+          description: 'Dashboard real-time perangkat bandara (CCTV, access door, FIDS).',
+          tags: ['Milestone','Pelco','Inalix','Scada iFIX5.5'],
+          image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop',
+        },
+        {
+          title: 'MyPortofolio',
+          type: 'Web',
+          description: 'Portofolio diri berbasis web agar bisa diakses online dan diupdate secara berkala.',
+          tags: ['HTML','CSS','Tailwind','React'],
+          image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1600&auto=format&fit=crop',
+          link: '#',
+          repo: '#'
+        },
+        {
+          title: 'IOT Tracker/Monitoring',
+          type: 'Web App',
+          description: 'IOT + audit trail + notifikasi Telegram.',
+          tags: ['Arduino','Raspberry','SQL'],
+          image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=1600&auto=format&fit=crop',
+          link: '#',
+          repo: '#'
+        }
+      ];
+
+      const EXPERIENCE = [
+        {
+          role: 'IT/ICT Technician',
+          company: 'PT Angkasa Pura Supports',
+          period: '2019 – Sekarang',
+          bullets: [
+            'Maintenance & troubleshooting: CCTV, FIDS, PABX/IP Phone, access door, flap barrier, X-ray, BAS (PLC & SCADA), MCFA, UVIS scanner.',
+            'Membangun tool kecil untuk monitoring & pencatatan.',
+            'Kolaborasi lintas tim untuk reliability & respon insiden.'
+          ]
+        },
+        {
+          role: 'Beginner UI Web Developer',
+          company: 'Freelance',
+          period: '2025',
+          bullets: [
+            'Membuat konsep web',
+            'Membangun UI web untuk diterapkan'
+          ]
+        }
+      ];
+
+      // --- Render Projects ---
+      const grid = document.getElementById('grid');
+      const search = document.getElementById('search');
+      const category = document.getElementById('category');
+
+      function cardTemplate(p){
+        const tags = p.tags.map(t=>`<span class="rounded-xl border border-slate-200/70 px-2.5 py-1 text-xs dark:border-slate-800">${t}</span>`).join('');
+        return `
+          <article class="group overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm transition hover:shadow-soft dark:border-slate-800 dark:bg-slate-950">
+            <div class="relative h-44 w-full overflow-hidden">
+              <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
+            </div>
+            <div class="p-4">
+              <div class="mb-1 flex items-center justify-between gap-2">
+                <h3 class="text-base font-semibold">${p.title}</h3>
+                <span class="rounded-xl bg-slate-100 px-2.5 py-1 text-xs dark:bg-slate-800">${p.type}</span>
+              </div>
+              <p class="mb-3 text-sm text-slate-600 dark:text-slate-300">${p.description}</p>
+              <div class="mb-4 flex flex-wrap gap-2">${tags}</div>
+            </div>
+          </article>
+        `;
+      }
+
+      function render(){
+        const q = (search.value || '').toLowerCase();
+        const cat = category.value;
+        const filtered = PROJECTS.filter(p => (cat==='All' || p.type===cat) && (p.title.toLowerCase().includes(q) || p.tags.join(' ').toLowerCase().includes(q)));
+        grid.innerHTML = filtered.map(cardTemplate).join('');
+      }
+
+      search.addEventListener('input', render);
+      category.addEventListener('change', render);
+      render();
+
+      // --- Render Experience ---
+      const expEl = document.getElementById('exp');
+      expEl.innerHTML = EXPERIENCE.map(e => `
+        <article class="rounded-2xl border border-slate-200/70 p-5 dark:border-slate-800">
+          <div class="mb-1 flex items-center justify-between">
+            <h3 class="text-base font-semibold">${e.role}</h3>
+            <span class="rounded-xl bg-slate-100 px-2.5 py-1 text-xs dark:bg-slate-800">${e.period}</span>
+          </div>
+          <p class="text-sm text-slate-500">${e.company}</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-200">
+            ${e.bullets.map(b=>`<li class="flex gap-2">• <span>${b}</span></li>`).join('')}
+          </ul>
+        </article>
+      `).join('');
+
+      // --- Footer year ---
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // --- Theme toggle (persist localStorage) ---
+      const themeBtn = document.getElementById('themeBtn');
+      const sun = document.getElementById('sun');
+      const moon = document.getElementById('moon');
+
+      function setTheme(mode){
+        const root = document.documentElement;
+        if(mode==='dark'){ root.classList.add('dark'); sun.classList.remove('hidden'); moon.classList.add('hidden'); }
+        else { root.classList.remove('dark'); sun.classList.add('hidden'); moon.classList.remove('hidden'); }
+        localStorage.setItem('theme', mode);
+      }
+
+      const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('theme');
+      setTheme(saved || (preferDark ? 'dark' : 'light'));
+
+      themeBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        setTheme(isDark ? 'light' : 'dark');
+      });
+
+      // --- Contact form (mock) ---
+      document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        alert('Terima kasih! (mock)\n\n' + JSON.stringify(data, null, 2));
+        e.target.reset();
+      });
+    </script>
+  </body>
 </html>
