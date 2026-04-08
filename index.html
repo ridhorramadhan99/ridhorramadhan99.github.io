@@ -1,492 +1,590 @@
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  Phone,
-  MapPin,
-  Download,
-  ExternalLink,
-  Sun,
-  Moon,
-  ArrowRight,
-  Send,
-  Globe,
-  ChevronRight,
-} from "lucide-react";
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ridho Ramadhan | IT / ICT Portfolio</title>
 
-// shadcn/ui components (available in this environment)
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
+  <meta name="description" content="Portfolio pribadi Ridho Ramadhan - IT/ICT, Elektronika, jaringan, CCTV, troubleshooting, dan sistem teknis." />
+  <meta name="theme-color" content="#0f172a" />
 
-/**
- * 🔧 Cara pakai cepat:
- * 1) Ganti data di konstanta PROFILE, PROJECTS, EXPERIENCE, CERTIFICATES.
- * 2) Tempel komponen <Portfolio /> di halaman Anda.
- * 3) Sudah responsif, dark mode, dan siap produksi.
- */
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-const PROFILE = {
-  name: "Ridho Ramadhan",
-  role: "IT/ICT Technician • Frontend Enthusiast",
-  summary:
-    "Teknisi IT/ICT dengan minat kuat pada web interaktif, automasi, dan pengalaman pengguna. Berpengalaman dengan CCTV, FIDS, PABX/IP Phone, akses kontrol, serta sistem SCADA/PLC. Suka membangun antarmuka yang bersih, cepat, dan mudah di-maintain.",
-  location: "Malang, Indonesia",
-  email: "ridho@email.com",
-  phone: "+62-812-3456-7890",
-  links: {
-    github: "https://github.com/username",
-    linkedin: "https://www.linkedin.com/in/username/",
-    website: "https://your-domain.com",
-    cv: "/cv-ridho.pdf",
-  },
-  skills: [
-    "React",
-    "TypeScript",
-    "Tailwind",
-    "Node.js",
-    "REST API",
-    "WebSocket",
-    "PLC/SCADA Basics",
-    "CCTV & Networking",
-    "Docker",
-    "Linux",
-  ],
-  tools: ["VS Code", "Git", "Figma", "Postman", "Wireshark"],
-};
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg-soft: #111827;
+      --card: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-2: #22c55e;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+    }
 
-const PROJECTS = [
-  {
-    title: "Airport Ops Dashboard",
-    type: "Web App",
-    description:
-      "Dashboard real-time untuk memantau perangkat bandara (CCTV, access door, FIDS) dengan notifikasi status dan analitik sederhana.",
-    tags: ["React", "Tailwind", "WebSocket", "SCADA"],
-    image:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop",
-    link: "#",
-    repo: "#",
-  },
-  {
-    title: "UVIS Portal Monitor",
-    type: "Web App",
-    description:
-      "UI monitoring untuk UVIS scanner portal dengan grafik performa, log alarm, dan export laporan harian.",
-    tags: ["Vite", "React", "Chart", "CSV Export"],
-    image:
-      "https://images.unsplash.com/photo-1555949963-aa79dcee981d?q=80&w=1600&auto=format&fit=crop",
-    link: "#",
-    repo: "#",
-  },
-  {
-    title: "Announcer Controller",
-    type: "Automation",
-    description:
-      "Antarmuka operator untuk automatic announcer dengan penjadwalan dan fallback manual.",
-    tags: ["Electron", "Node.js", "Serial"],
-    image:
-      "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop",
-    link: "#",
-    repo: "#",
-  },
-  {
-    title: "Portfolio 3D Lite",
-    type: "Web",
-    description:
-      "Eksperimen UI 3D ringan menggunakan CSS transforms untuk showcase proyek dengan performa tinggi.",
-    tags: ["React", "3D", "Performance"],
-    image:
-      "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1600&auto=format&fit=crop",
-    link: "#",
-    repo: "#",
-  },
-  {
-    title: "Access Door Tracker",
-    type: "Web App",
-    description:
-      "Pelacak akses pintu dengan audit trail dan integrasi WhatsApp untuk notifikasi insiden.",
-    tags: ["Next.js", "Prisma", "PostgreSQL"],
-    image:
-      "https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=1600&auto=format&fit=crop",
-    link: "#",
-    repo: "#",
-  },
-  {
-    title: "Minimal Resume Site",
-    type: "Web",
-    description:
-      "Situs resume minimalis yang memuat cepat (Lighthouse 98+).",
-    tags: ["HTML", "CSS", "No JS"],
-    image:
-      "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=1600&auto=format&fit=crop",
-    link: "#",
-    repo: "#",
-  },
-];
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
 
-const EXPERIENCE = [
-  {
-    role: "IT/ICT Technician",
-    company: "PT Angkasa Pura Supports",
-    period: "2021 – Sekarang",
-    bullets: [
-      "Maintenance & troubleshooting sistem CCTV, FIDS, PABX/IP Phone, access door, flap barrier, X-ray, BAS (PLC & SCADA), MCFA, dan UVIS scanner.",
-      "Membangun tool kecil untuk pemantauan perangkat dan pencatatan insiden (web-based).",
-      "Berkolaborasi lintas tim untuk peningkatan reliability dan respon insiden.",
-    ],
-  },
-  {
-    role: "Freelance Web Dev",
-    company: "Berbagai Klien",
-    period: "2019 – 2021",
-    bullets: [
-      "Landing page performa tinggi dan dashboard sederhana untuk UMKM.",
-      "Integrasi formulir ke Google Sheets/Email & automasi laporan.",
-    ],
-  },
-];
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 25%),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 25%),
+        linear-gradient(135deg, #020617, #0b1220 40%, #111827 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
 
-const CERTIFICATES = [
-  { name: "Cisco Packet Tracer", issuer: "Cisco", year: 2020 },
-  { name: "Fundamental Web Dev", issuer: "Dicoding", year: 2023 },
-];
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-const CATEGORIES = ["All", "Web App", "Web", "Automation"] as const;
+    .container {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+    }
 
-type Category = (typeof CATEGORIES)[number];
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(14px);
+      background: rgba(2, 6, 23, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
 
-export default function Portfolio() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [activeCategory, setActiveCategory] = useState<Category>("All");
-  const [query, setQuery] = useState("");
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
-  }, [theme]);
+    .logo {
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 0.4px;
+    }
 
-  const filtered = useMemo(() => {
-    return PROJECTS.filter((p) =>
-      (activeCategory === "All" || p.type === activeCategory) &&
-      (p.title.toLowerCase().includes(query.toLowerCase()) ||
-        p.tags.join(" ").toLowerCase().includes(query.toLowerCase()))
-    );
-  }, [activeCategory, query]);
+    .logo span {
+      color: var(--primary);
+    }
 
-  return (
-    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      {/* NAVBAR */}
-      <header className="sticky top-0 z-40 border-b border-slate-200/60 bg-white/70 backdrop-blur dark:border-slate-800 dark:bg-slate-950/60">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <a href="#home" className="font-semibold tracking-tight">{PROFILE.name}</a>
-          <nav className="hidden gap-6 md:flex">
-            {[
-              ["About", "#about"],
-              ["Projects", "#projects"],
-              ["Experience", "#experience"],
-              ["Contact", "#contact"],
-            ].map(([label, href]) => (
-              <a key={label} href={href} className="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
-                {label}
-              </a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")} aria-label="Toggle theme" className="rounded-2xl">
-              {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-            </Button>
-            <Button asChild className="rounded-2xl">
-              <a href={PROFILE.links.cv} target="_blank" rel="noreferrer">
-                <Download className="mr-2 h-4 w-4" /> Download CV
-              </a>
-            </Button>
-          </div>
-        </div>
-      </header>
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
 
-      {/* HERO */}
-      <section id="home" className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 md:grid-cols-5 md:py-20">
-          <motion.div
-            className="md:col-span-3"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="mb-2 inline-flex items-center gap-2 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              <Globe className="h-3.5 w-3.5" /> Portfolio
-            </p>
-            <h1 className="text-3xl font-semibold leading-tight md:text-5xl">
-              {PROFILE.role}
-            </h1>
-            <p className="mt-4 max-w-2xl text-slate-600 dark:text-slate-300">
-              {PROFILE.summary}
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Badge className="rounded-xl" variant="secondary">
-                <MapPin className="mr-1.5 h-3.5 w-3.5" /> {PROFILE.location}
-              </Badge>
-              <a href={`mailto:${PROFILE.email}`} className="inline-flex items-center text-sm text-slate-700 hover:underline dark:text-slate-200">
-                <Mail className="mr-1.5 h-4 w-4" /> {PROFILE.email}
-              </a>
-              <a href={`tel:${PROFILE.phone}`} className="inline-flex items-center text-sm text-slate-700 hover:underline dark:text-slate-200">
-                <Phone className="mr-1.5 h-4 w-4" /> {PROFILE.phone}
-              </a>
-            </div>
-            <div className="mt-6 flex items-center gap-3">
-              <Button asChild className="rounded-2xl">
-                <a href="#projects">
-                  Lihat Proyek <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-              <Button variant="outline" asChild className="rounded-2xl">
-                <a href={PROFILE.links.github} target="_blank" rel="noreferrer" className="inline-flex items-center">
-                  <Github className="mr-2 h-4 w-4" /> GitHub
-                </a>
-              </Button>
-              <Button variant="outline" asChild className="rounded-2xl">
-                <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center">
-                  <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
-                </a>
-              </Button>
-            </div>
-          </motion.div>
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: 0.25s ease;
+    }
 
-          <motion.div
-            className="md:col-span-2"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <Card className="rounded-2xl border-slate-200/70 bg-gradient-to-b from-slate-50 to-white dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
-              <CardHeader>
-                <CardTitle>Keahlian Utama</CardTitle>
-                <CardDescription>Teknologi & alat yang sering dipakai</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-3 flex flex-wrap gap-2">
-                  {PROFILE.skills.map((s) => (
-                    <Badge key={s} variant="secondary" className="rounded-xl">
-                      {s}
-                    </Badge>
-                  ))}
-                </div>
-                <Separator className="my-4" />
-                <p className="mb-2 text-sm text-slate-500">Tools</p>
-                <div className="flex flex-wrap gap-2">
-                  {PROFILE.tools.map((t) => (
-                    <Badge key={t} className="rounded-xl" variant="outline">
-                      {t}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
+    .nav-links a:hover {
+      color: var(--text);
+    }
 
-      {/* ABOUT */}
-      <section id="about" className="border-y border-slate-200/70 py-14 dark:border-slate-800 md:py-20">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
-          <div>
-            <h2 className="text-2xl font-semibold md:text-3xl">Tentang Saya</h2>
-            <p className="mt-2 text-slate-600 dark:text-slate-300">
-              Fokus pada reliability sistem, observability, dan UI yang mudah digunakan. Tertarik pada integrasi sistem bandara dan web real-time.
-            </p>
-          </div>
-          <div className="md:col-span-2">
-            <ul className="space-y-3 text-slate-700 dark:text-slate-200">
-              <li className="flex items-start gap-3"><ChevronRight className="mt-1 h-4 w-4" />Suka membangun dashboard monitoring ringan dengan performa tinggi.</li>
-              <li className="flex items-start gap-3"><ChevronRight className="mt-1 h-4 w-4" />Tulis kode yang rapih, reusable, dan mudah di-scale.</li>
-              <li className="flex items-start gap-3"><ChevronRight className="mt-1 h-4 w-4" />Komunikasi jelas, dokumentasi singkat-padat.
-              </li>
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {CERTIFICATES.map((c) => (
-                <Badge key={c.name} variant="outline" className="rounded-xl">
-                  {c.name} • {c.issuer} • {c.year}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+    .hero {
+      padding: 72px 0 48px;
+    }
 
-      {/* PROJECTS */}
-      <section id="projects" className="py-14 md:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <h2 className="text-2xl font-semibold md:text-3xl">Proyek Unggulan</h2>
-              <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
-                Kumpulan proyek yang relevan dengan pekerjaan dan minat saya. Filter berdasarkan kategori atau cari berdasarkan teknologi.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 md:w-[380px]">
-              <Input
-                placeholder="Cari proyek atau tag (mis: React, WebSocket)"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="rounded-2xl"
-              />
-              <Tabs value={activeCategory} onValueChange={(v) => setActiveCategory(v as Category)}>
-                <TabsList className="grid grid-cols-4 rounded-2xl">
-                  {CATEGORIES.map((c) => (
-                    <TabsTrigger key={c} value={c} className="rounded-xl">
-                      {c}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
-            </div>
-          </div>
+    .hero-wrap {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 32px;
+      align-items: center;
+    }
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((p) => (
-              <motion.div key={p.title} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <Card className="group overflow-hidden rounded-2xl border-slate-200/70 dark:border-slate-800">
-                  <div className="relative h-44 w-full overflow-hidden">
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>{p.title}</span>
-                      <Badge className="rounded-xl" variant="secondary">{p.type}</Badge>
-                    </CardTitle>
-                    <CardDescription>{p.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="mb-4 flex flex-wrap gap-2">
-                      {p.tags.map((t) => (
-                        <Badge key={t} variant="outline" className="rounded-xl">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button asChild variant="outline" className="rounded-2xl">
-                        <a href={p.link} target="_blank" rel="noreferrer" className="inline-flex items-center">
-                          <ExternalLink className="mr-2 h-4 w-4" /> Live
-                        </a>
-                      </Button>
-                      <Button asChild variant="outline" className="rounded-2xl">
-                        <a href={p.repo} target="_blank" rel="noreferrer" className="inline-flex items-center">
-                          <Github className="mr-2 h-4 w-4" /> Repo
-                        </a>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: rgba(56, 189, 248, 0.08);
+      color: #7dd3fc;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
 
-      {/* EXPERIENCE */}
-      <section id="experience" className="border-y border-slate-200/70 py-14 dark:border-slate-800 md:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-2xl font-semibold md:text-3xl">Pengalaman</h2>
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
-            {EXPERIENCE.map((e) => (
-              <Card key={e.role} className="rounded-2xl border-slate-200/70 dark:border-slate-800">
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{e.role}</span>
-                    <Badge className="rounded-xl" variant="secondary">{e.period}</Badge>
-                  </CardTitle>
-                  <CardDescription>{e.company}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-slate-700 dark:text-slate-200">
-                    {e.bullets.map((b, i) => (
-                      <li key={i} className="flex items-start gap-2"><ChevronRight className="mt-1 h-4 w-4 flex-none" />{b}</li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+    .hero h1 {
+      font-size: clamp(2.3rem, 5vw, 4.3rem);
+      line-height: 1.08;
+      margin-bottom: 18px;
+    }
 
-      {/* CONTACT */}
-      <section id="contact" className="py-14 md:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="grid gap-8 md:grid-cols-5">
-            <div className="md:col-span-2">
-              <h2 className="text-2xl font-semibold md:text-3xl">Kontak</h2>
-              <p className="mt-2 text-slate-600 dark:text-slate-300">
-                Ada kolaborasi atau proyek? Kirim pesan melalui formulir atau hubungi langsung.
-              </p>
+    .hero h1 span {
+      color: var(--primary);
+    }
 
-              <div className="mt-6 space-y-3 text-sm">
-                <a href={`mailto:${PROFILE.email}`} className="flex items-center gap-2 text-slate-700 hover:underline dark:text-slate-200"><Mail className="h-4 w-4" /> {PROFILE.email}</a>
-                <a href={`tel:${PROFILE.phone}`} className="flex items-center gap-2 text-slate-700 hover:underline dark:text-slate-200"><Phone className="h-4 w-4" /> {PROFILE.phone}</a>
-                <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-slate-700 hover:underline dark:text-slate-200"><Linkedin className="h-4 w-4" /> LinkedIn</a>
-                <a href={PROFILE.links.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-slate-700 hover:underline dark:text-slate-200"><Github className="h-4 w-4" /> GitHub</a>
-              </div>
-            </div>
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
 
-            <Card className="md:col-span-3 rounded-2xl border-slate-200/70 dark:border-slate-800">
-              <CardHeader>
-                <CardTitle>Kirim Pesan</CardTitle>
-                <CardDescription>Formulir demo (mock). Integrasikan ke email/WA sesuai kebutuhan.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const form = e.currentTarget as HTMLFormElement;
-                    const data = Object.fromEntries(new FormData(form).entries());
-                    alert(`Terima kasih! Pesan terkirim (mock)\n\n${JSON.stringify(data, null, 2)}`);
-                    form.reset();
-                  }}
-                  className="space-y-3"
-                >
-                  <div className="grid gap-3 md:grid-cols-2">
-                    <Input name="name" placeholder="Nama" className="rounded-2xl" required />
-                    <Input type="email" name="email" placeholder="Email" className="rounded-2xl" required />
-                  </div>
-                  <Input name="subject" placeholder="Subjek" className="rounded-2xl" />
-                  <Textarea name="message" placeholder="Pesan" className="min-h-[120px] rounded-2xl" required />
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-slate-500">Data tidak benar-benar dikirim. Ganti handler sesuai kebutuhan.</p>
-                    <Button type="submit" className="rounded-2xl">
-                      <Send className="mr-2 h-4 w-4" /> Kirim
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
 
-      {/* FOOTER */}
-      <footer className="border-t border-slate-200/70 py-8 text-sm dark:border-slate-800">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 md:flex-row">
-          <p className="text-slate-500">© {new Date().getFullYear()} {PROFILE.name}. All rights reserved.</p>
-          <div className="flex items-center gap-3">
-            <a href={PROFILE.links.website} target="_blank" rel="noreferrer" className="hover:underline">Website</a>
-            <a href={PROFILE.links.github} target="_blank" rel="noreferrer" className="hover:underline">GitHub</a>
-            <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer" className="hover:underline">LinkedIn</a>
-          </div>
-        </div>
-      </footer>
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      color: #03111c;
+      box-shadow: 0 12px 28px rgba(56, 189, 248, 0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .mini-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .mini-info span {
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 999px;
+    }
+
+    .profile-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      background: rgba(56, 189, 248, 0.12);
+      border-radius: 50%;
+      top: -70px;
+      right: -70px;
+      filter: blur(10px);
+    }
+
+    .profile-image-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .profile-image {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 28px;
+      border: 3px solid rgba(255,255,255,0.15);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+    }
+
+    .profile-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+
+    .profile-card p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .profile-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .profile-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 36px 0 24px;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+
+    .grid-3, .grid-2 {
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.22);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .skill {
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #e2e8f0;
+      font-size: 0.94rem;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-item {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .timeline-item h4 {
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-item small {
+      color: #7dd3fc;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .timeline-item p {
+      color: var(--muted);
+    }
+
+    .contact-box {
+      text-align: center;
+      padding: 34px;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(255,255,255,0.03));
+      border-radius: 28px;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-box h3 {
+      font-size: 1.7rem;
+      margin-bottom: 12px;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    footer {
+      padding: 32px 0 48px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-wrap,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .profile-image {
+        width: 200px;
+        height: 200px;
+      }
+
+      .nav {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nav-links {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .profile-card {
+        padding: 22px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">Ridho<span>.</span></a>
+      <nav class="nav-links">
+        <a href="#tentang">Tentang</a>
+        <a href="#skill">Skill</a>
+        <a href="#pengalaman">Perjalanan</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
     </div>
-  );
-}
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-wrap">
+        <div>
+          <div class="badge">● IT / ICT • Elektronika • Technical Support</div>
+          <h1>Halo, saya <span>Ridho Ramadhan</span></h1>
+          <p>
+            Saya memiliki minat kuat pada bidang IT/ICT, sistem elektronik, troubleshooting,
+            jaringan dasar, CCTV, serta sistem teknis yang mendukung operasional modern.
+            Saya suka belajar, berkembang, dan membangun diri menjadi teknisi yang lebih andal.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#kontak" class="btn btn-primary">Hubungi Saya</a>
+            <a href="CV.pdf" class="btn btn-secondary" target="_blank">Lihat / Download CV</a>
+          </div>
+
+          <div class="mini-info">
+            <span>📍 Jawa Timur, Indonesia</span>
+            <span>🎓 Teknik Elektro / Elektronika</span>
+            <span>⚙️ IT Support Mindset</span>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-image-wrap">
+            <img src="fotoprofil.jpg" alt="Foto Profil Ridho" class="profile-image" />
+          </div>
+          <h3>Siap berkembang di dunia teknis</h3>
+          <p>
+            Fokus pada kemampuan lapangan, troubleshooting, adaptasi sistem, dan pembelajaran berkelanjutan.
+          </p>
+
+          <div class="profile-list">
+            <div class="profile-item">✔ Dasar jaringan komputer</div>
+            <div class="profile-item">✔ Instalasi & monitoring CCTV</div>
+            <div class="profile-item">✔ Troubleshooting perangkat IT</div>
+            <div class="profile-item">✔ Pengenalan PLC & SCADA</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="container">
+      <h2 class="section-title">Tentang Saya</h2>
+      <p class="section-sub">
+        Saya adalah seseorang yang tertarik pada dunia teknologi, sistem, perangkat, dan pemecahan masalah.
+        Saya menikmati proses belajar hal-hal teknis dan ingin terus bertumbuh menjadi pribadi yang lebih kompeten
+        di bidang IT/ICT maupun sistem elektronik.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Teknis & Lapangan</h3>
+          <p>
+            Nyaman mempelajari perangkat, sistem operasional, troubleshooting, dan dukungan teknis harian.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Adaptif & Teliti</h3>
+          <p>
+            Terbiasa belajar dari praktik, memperhatikan detail, dan menyesuaikan diri dengan kebutuhan kerja.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Growth Mindset</h3>
+          <p>
+            Saya percaya skill bisa dibangun pelan-pelan melalui konsistensi, pengalaman, dan kemauan belajar.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skill" class="container">
+      <h2 class="section-title">Skill & Kompetensi</h2>
+      <p class="section-sub">
+        Beberapa area yang saat ini saya kuasai dan terus saya tingkatkan.
+      </p>
+
+      <div class="card">
+        <div class="skills">
+          <span class="skill">Dasar Jaringan Komputer</span>
+          <span class="skill">Cisco Packet Tracer</span>
+          <span class="skill">Instalasi CCTV</span>
+          <span class="skill">Monitoring CCTV</span>
+          <span class="skill">Troubleshooting IT</span>
+          <span class="skill">HTML5 Dasar</span>
+          <span class="skill">PLC Dasar</span>
+          <span class="skill">SCADA Pengenalan</span>
+          <span class="skill">Desain Grafis Dasar</span>
+          <span class="skill">Problem Solving</span>
+          <span class="skill">Kerja Tim</span>
+          <span class="skill">Adaptif Shift Kerja</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="pengalaman" class="container">
+      <h2 class="section-title">Perjalanan & Pembelajaran</h2>
+      <p class="section-sub">
+        Ringkasan perjalanan pendidikan dan pengembangan diri saya sejauh ini.
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <small>Pendidikan</small>
+          <h4>Teknik Elektro / Elektronika</h4>
+          <p>
+            Sedang menyelesaikan pendidikan sambil terus membangun pemahaman di bidang IT/ICT,
+            sistem elektronik, dan perangkat teknis.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <small>Pelatihan</small>
+          <h4>Jaringan, Cisco, dan PLC</h4>
+          <p>
+            Mempelajari dasar jaringan komputer, mini class Cisco, serta pelatihan otomasi industri
+            sebagai pondasi pengembangan skill teknis.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <small>Fokus Karier</small>
+          <h4>IT Support • ICT • Technical Systems</h4>
+          <p>
+            Berfokus membangun jalur karier yang kuat di bidang support teknis, sistem infrastruktur,
+            perangkat operasional, dan troubleshooting lapangan.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontak" class="container">
+      <div class="contact-box">
+        <h3>Mari Terhubung</h3>
+        <p>
+          Jika ada kesempatan kerja, kolaborasi, atau hanya ingin berkenalan, kamu bisa menghubungi saya.
+        </p>
+
+        <div class="hero-buttons" style="justify-content:center;">
+          <a href="mailto:ridhorramadhan99@gmail.com" class="btn btn-primary">Email Saya</a>
+          <a href="https://github.com/ridhorramadhan99" target="_blank" class="btn btn-secondary">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Ridho Ramadhan • Built with simple HTML & GitHub Pages
+  </footer>
+
+</body>
+</html>
